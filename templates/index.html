@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diabetes Prediction</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f0f4f8; min-height: 100vh;
+           display: flex; align-items: center; justify-content: center; }
+    .container { background: #fff; padding: 2rem; border-radius: 12px;
+                 box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+    h1 { text-align: center; color: #1F4E79; margin-bottom: 1.5rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 4px; }
+    input, select { width: 100%; padding: 8px 12px; border: 1px solid #ccc;
+                    border-radius: 6px; font-size: 0.95rem; }
+    select { grid-column: span 2; }
+    .full { grid-column: span 2; }
+    button { grid-column: span 2; padding: 10px; background: #2E75B6; color: #fff;
+             border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; }
+    button:hover { background: #1F4E79; }
+    .result { margin-top: 1rem; padding: 12px; border-radius: 8px; text-align: center;
+              font-size: 1.1rem; font-weight: bold; }
+    .diabetic     { background: #FDECEA; color: #C62828; }
+    .non-diabetic { background: #E8F5E9; color: #2E7D32; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Diabetes Prediction</h1>
+
+  {% if prediction %}
+  <div class="result {{ 'diabetic' if prediction == 'Diabetic' else 'non-diabetic' }}">
+    Hasil prediksi: {{ prediction }}
+  </div>
+  {% endif %}
+
+  <form method="post" action="/predict">
+    <div class="grid">
+      <div class="full">
+        <label>Model</label>
+        <select name="model">
+          {% for m in model_names %}
+          <option value="{{ m }}" {{ 'selected' if m == selected_model }}>{{ m }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div><label>Pregnancies</label>
+           <input type="number" name="Pregnancies" required placeholder="0-17"></div>
+      <div><label>Glucose</label>
+           <input type="number" name="Glucose" required placeholder="0-200"></div>
+      <div><label>BloodPressure</label>
+           <input type="number" name="BloodPressure" required placeholder="0-122"></div>
+      <div><label>SkinThickness</label>
+           <input type="number" name="SkinThickness" required placeholder="0-99"></div>
+      <div><label>Insulin</label>
+           <input type="number" name="Insulin" required placeholder="0-846"></div>
+      <div><label>BMI</label>
+           <input type="number" step="0.1" name="BMI" required placeholder="0.0-67.1"></div>
+      <div><label>DiabetesPedigreeFunction</label>
+           <input type="number" step="0.001" name="DiabetesPedigreeFunction"
+                  required placeholder="0.078-2.42"></div>
+      <div><label>Age</label>
+           <input type="number" name="Age" required placeholder="21-81"></div>
+      <button type="submit">Predict</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
